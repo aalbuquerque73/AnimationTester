@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>Animation Tester</title>
+		
+		<link rel="stylesheet" href="css/style.css"/>
+		
+		<script data-main="js/main.js" src="js/lib/require-2.1.11.js"></script>
+	</head>
+	
+	<body>
+	<div id="content" data-bind="html: process, style: css"></div>
+	<div id="control">
+		<textarea id="html" data-bind="value: html"></textarea>
+		<div id="css">
+			<div id="map" data-bind="foreach: css">
+				<div class="selector" data-bind="click: add">
+					<input class="header" data-bind="value: name, click: select"/> {
+					<div class="properties" data-bind="foreach: properties">
+						<div class="property">
+							<input class="name" data-bind="value: name, hasFocus: true, event: { click: select, blur: unselect }" />:
+							<input class="value" data-bind="value: value, event: { click: select, blur: unselect }" />;
+							<button class="remove" data-bind="click: $parent.remove">-</button>
+						</div>
+					</div>
+					<div class="footer">}</div>
+				</div>
+			</div>
+			<div id="toolbox">
+				<button data-bind="click: add">+</button>
+				<button data-bind="remove" disabled="disabled">-</button>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>
