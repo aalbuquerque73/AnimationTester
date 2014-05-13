@@ -1,47 +1,50 @@
+.board {
+	width: 100%;
+	height: 100%;
+}
+.panel {
+	white-space: nowrap;
+	padding: 5px;
+}
 #content {
 	position: relative;
+	display: inline-block;
+	vertical-align: top;
 	border: #000069 solid 1px;
 	border-radius: 5px;
-	width: 100%;
-	height: 50%;
 	margin-bottom: 1%;
+}
+
+#js {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	border: #000069 solid 1px;
+	border-radius: 5px;
+	padding: 5px;
 }
 
 #control {
 	position: relative;
-	border: #006900 solid 1px;
-	border-radius: 5px;
-	width: 100%;
-	height: 47%;
+	white-space: nowrap;
 }
 
 #html {
-	position: absolute;
-	left: 3px;
-	top: 3px;
+	position: relative;
 	display: inline-block;
-	width: 48%;
-	height: 98%;
 	vertical-align: middle;
 }
 
 #css {
-	position: absolute;
-	right: 3px;
-	top: 3px;
+	position: relative;
 	display: inline-block;
+	background: linear-gradient(#ddd, #bbb);
 	border: #006900 solid 1px;
-	width: 48%;
-	height: 98%;
 	vertical-align: middle;
+	padding: 5px;
 }
 #map {
-	position: absolute;
-	top: 1%;
-	left: 1%;
-	background: linear-gradient(#ddd, #bbb);
-	width: 98%;
-	height: 88%;
+	position: relative;
 	overflow: auto;
 }
 #toolbox {

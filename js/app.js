@@ -1,35 +1,5 @@
-define(["jquery", "underscore", "knockout", "utils"],
+define(["jquery", "underscore", "knockout", "utils", 'handlers'],
 function($, _, ko, U) {
-	ko.bindingHandlers.style = {
-		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			var css = ko.utils.unwrapObservable(valueAccessor());
-			console.log("[ko:style:init]", arguments, css);
-			_.each(css, function(selector) {
-				var $element = $("#content "+ko.unwrap(selector.name));
-				_.each(selector.properties(), function(property) {
-					if (property.name() && property.value()) {
-						$element.css(ko.unwrap(property.name), ko.unwrap(property.value));
-					}
-				});
-				console.log("[ko:style:init]", $element);
-			});
-		},
-		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			var css = ko.utils.unwrapObservable(valueAccessor());
-			console.log("[ko:style:update]", arguments, css);
-			_.each(css, function(selector) {
-				var $element = $("#content "+ko.unwrap(selector.name));
-				$element.removeAttr("style");
-				_.each(selector.properties(), function(property) {
-					if (property.name() && property.value()) {
-						console.log("[ko:style:update:css:property]",property.name());
-						$element.css(ko.unwrap(property.name), ko.unwrap(property.value));
-					}
-				});
-				console.log("[ko:style:update]", $element);
-			});
-		}
-	};
 	function Property() {
 		this._data = {
 			name: "",
@@ -104,11 +74,13 @@ function($, _, ko, U) {
 	function ViewModel() {
 		this._data = {
 			html: "",
+			js: "",
 			css: []
 		};
 		var local = JSON.parse(localStorage.AnimationTester);
 		console.log("[ViewModel:constructor", local);
 		this._data.html = local.html;
+		this._data.js = local.js;
 		_.each(local.css, function(value) {
 			this.push(Selector.create(value));
 		}, this._data.css);
@@ -124,6 +96,15 @@ function($, _, ko, U) {
 		
 		this.process = ko.computed(function() {
 			return this.html();
+		}, this);
+		
+		this.execute = ko.computed(function() {
+			var js = ko.utils.unwrapObservable(this.js());
+			setTimeout(function() {
+				(function() {
+					eval(js);
+				}).apply(this);
+			}, 0);
 		}, this);
 		
 		/*this.style = ko.computed(function() {
@@ -154,6 +135,7 @@ function($, _, ko, U) {
 		serialize: function() {
 			var save = {
 				html: this.html(),
+				js: this.js(),
 				css: []
 			};
 			_.each(this.css(), function(selector) {
@@ -171,6 +153,9 @@ function($, _, ko, U) {
 			}, save.css);
 			console.log("[ViewModel:serialize]", save);
 			localStorage.AnimationTester = JSON.stringify(save);
+		},
+		parseHandler: function() {
+			console.log("[ViewModel:parsehandler]", arguments);
 		},
 		start: function() {
 			ko.applyBindings(this);
