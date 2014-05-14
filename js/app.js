@@ -77,13 +77,21 @@ function($, _, ko, U) {
 			js: "",
 			css: []
 		};
-		var local = JSON.parse(localStorage.AnimationTester);
-		console.log("[ViewModel:constructor", local);
-		this._data.html = local.html;
-		this._data.js = local.js;
-		_.each(local.css, function(value) {
-			this.push(Selector.create(value));
-		}, this._data.css);
+		try {
+			var local = JSON.parse(localStorage.AnimationTester);
+			console.log("[ViewModel:constructor", local);
+			this._data.html = local.html;
+			this._data.js = local.js;
+			_.each(local.css, function(value) {
+				this.push(Selector.create(value));
+			}, this._data.css);
+		} catch(ignore) {
+			console.warn("[ViewModel:unserialize]", localStorage.AnimationTester);
+			console.log("[ViewModel:unserialize]", ignore.message);
+			if (ignore.stack) {
+				console.log(ignore.stack);
+			}
+		}
 		
 		_.each(this._data, function(value, key, object) {
 			console.log("[ViewModel:constructor:data]", arguments);
