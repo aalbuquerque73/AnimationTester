@@ -6,13 +6,21 @@ function($, _, ko, U) {
 			js: "",
 			css: ""
 		};
-		var local = JSON.parse(localStorage.AnimationTester);
-		console.log("[ViewModel:constructor", local);
-		_.each(local, function(value, key) {
-			this[key] = ""+value;
-		}, this._data);
-		this._data.html = local.html;
-		this._data.js = local.js;
+		try {
+			var local = JSON.parse(localStorage.AnimationTester);
+			console.log("[ViewModel:constructor", local);
+			_.each(local, function(value, key) {
+				this[key] = ""+value;
+			}, this._data);
+			this._data.html = local.html;
+			this._data.js = local.js;
+		} catch(ignore) {
+			console.warn("[ViewModel:unserialize]", localStorage.AnimationTester);
+			console.log("[ViewModel:unserialize]", ignore.message);
+			if (ignore.stack) {
+				console.log(ignore.stack);
+			}
+		}
 		
 		_.each(this._data, function(value, key) {
 			console.log("[ViewModel:constructor:data]", arguments);
