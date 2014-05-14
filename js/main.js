@@ -12,6 +12,8 @@ requirejs.config({
     	http: 'lib/http',
     	utils: 'lib/utils',
     	
+    	handlers: 'handlers',
+    	
     	app: 'app'
     },
     
@@ -29,6 +31,12 @@ requirejs.config({
     	},
     	utils: {
     		exports: 'Utils'
+    	},
+    	'mode/css/css': {
+    		deps: ['lib/codemirror']
+    	},
+    	handlers: {
+    		deps: ['jquery', 'underscore', 'knockout', 'utils', 'lib/codemirror', 'mode/css/css']
     	},
     	app: {
     		deps: ["knockout"],

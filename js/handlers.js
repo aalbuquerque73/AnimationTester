@@ -1,5 +1,15 @@
-define(['jquery', 'underscore', 'knockout', 'utils'],
-function($, _, ko, U) {
+define(
+[
+ 'jquery',
+ 'underscore',
+ 'knockout',
+ 'utils',
+ 'lib/codemirror',
+ 'mode/css/css',
+ 'mode/htmlmixed/htmlmixed',
+ 'mode/javascript/javascript'
+],
+function($, _, ko, U, CodeMirror, Css) {
 	var ui = {
 		list: [],
 		window: $(window),
@@ -53,10 +63,10 @@ function($, _, ko, U) {
 	ui.init();
 	
 	function updatePropertyLength(context, element, property, parentProperty, outerProperty, expanders) {
-		console.log("[updatePropertyLength] expanders", property, expanders, element);
+		//console.log("[updatePropertyLength] expanders", property, expanders, element);
 		var length = $(element).parent()[parentProperty]();
 		var count = 1;
-		console.log("[updatePropertyLength] length", length);
+		//console.log("[updatePropertyLength] length", length);
 		var el = $(element);
 		//console.log("[updatePropertyLength] siblings of", el[0], el);
 		//console.log("[updatePropertyLength] next siblings of", el[0], el.next()[0]);
@@ -81,15 +91,15 @@ function($, _, ko, U) {
 			++count;
 		}
 		el = $(element);
-		console.log("[updatePropertyLength] length of", el[0]);
+		//console.log("[updatePropertyLength] length of", el[0]);
 		var delta = el[outerProperty]() - el[property]();
-		console.log("[updatePropertyLength] new length", length, delta);
+		//console.log("[updatePropertyLength] new length", length, delta);
 		length -= (count+1)*delta;
-		console.log("[updatePropertyLength] new length", length);
+		//console.log("[updatePropertyLength] new length", length);
 		el[property](length / expanders);
 	}
 	
-	//console.log("[App] Setting up UI bidings...");
+	console.log("[App] Setting up UI bidings...");
 	ko.bindingHandlers.ui = {
 		init: function(element, valueAccessor, allBindings, viewModel, context) {
 			//console.log("[ui:init] arguments", arguments);
@@ -168,32 +178,81 @@ function($, _, ko, U) {
 
 	ko.bindingHandlers.style = {
 		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			var css = ko.utils.unwrapObservable(valueAccessor());
-			//console.log("[ko:style:init]", arguments, css);
-			_.each(css, function(selector) {
-				var $element = $("#content "+ko.unwrap(selector.name));
-				_.each(selector.properties(), function(property) {
-					if (property.name() && property.value()) {
-						$element.css(ko.unwrap(property.name), ko.unwrap(property.value));
-					}
+			var css = ko.utils.unwrapObservable(valueAccessor())
+				.replace(/([\.#\w]+)\s{([^}]*)}/g, function(match, selector, properties) {
+					//console.log("[style:match]", arguments);
+					var $selector = $("#content "+selector);
+					var props = properties
+						.replace(/([\w-]+)\s*:\s*([^;]*);/gm,
+							function(match, property, value) {
+								//console.log("[style:match:property]", arguments);
+								$selector.css(property, value);
+								return match;
+							});
+					//console.log("[style:match]", props);
+					return match;
 				});
-				//console.log("[ko:style:init]", $element);
-			});
+			//console.log("[ko:style:init]", arguments, css);
 		},
 		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			var css = ko.utils.unwrapObservable(valueAccessor());
-			//console.log("[ko:style:update]", arguments, css);
-			_.each(css, function(selector) {
-				var $element = $("#content "+ko.unwrap(selector.name));
-				$element.removeAttr("style");
-				_.each(selector.properties(), function(property) {
-					if (property.name() && property.value()) {
-						//console.log("[ko:style:update:css:property]",property.name());
-						$element.css(ko.unwrap(property.name), ko.unwrap(property.value));
-					}
-				});
-				//console.log("[ko:style:update]", $element);
+			var css = ko.utils.unwrapObservable(valueAccessor())
+			.replace(/([\.#\w]+)\s{([^}]*)}/g, function(match, selector, properties) {
+				//console.log("[style:match]", arguments);
+				var $selector = $("#content "+selector);
+				var props = properties
+					.replace(/([\w-]+)\s*:\s*([^;]*);/gm,
+						function(match, property, value) {
+							//console.log("[style:match:property]", arguments);
+							$selector.css(property, value);
+							return match;
+						});
+				//console.log("[style:match]", props);
+				return match;
 			});
+			//console.log("[ko:style:update]", arguments, css);
+		}
+	};
+	
+	function Editor() {
+		this.editors = {
+			css: function(element, options) {
+				options = options || {};
+				options.mode = "css";
+				CodeMirror.fromTextArea(element, options);
+			},
+			html: function(element, options) {
+				options = options || {};
+				options.mode = "htmlmixed";
+				CodeMirror.fromTextArea(element, options);
+			},
+			js: function(element, options) {
+				options = options || {};
+				options.mode = "javascript";
+				CodeMirror.fromTextArea(element, options);
+			}
+		};
+	}
+	Editor.prototype = {
+		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+			console.log("[ko:editor:init]", arguments, this);
+			var mode = ko.utils.unwrapObservable(valueAccessor());
+			if (this.editors.hasOwnProperty(mode)) {
+				this.editors[mode](element, allBindings.get('config'));
+			}
+		},
+		
+		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+			console.log("[ko:editor:update]", arguments, this);
+		}
+	};
+	var editor = new Editor();
+	ko.bindingHandlers.editor = {
+		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+			editor.init(element, valueAccessor, allBindings, viewModel, bindingContext);
+		},
+		
+		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+			editor.update(element, valueAccessor, allBindings, viewModel, bindingContext);
 		}
 	};
 	

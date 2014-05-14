@@ -3,6 +3,7 @@
 		<title>Animation Tester</title>
 		
 		<link rel="stylesheet" href="css/style.css"/>
+		<link rel="stylesheet" href="css/codemirror.css">
 		
 		<script data-main="js/main.js" src="js/lib/require-2.1.11.js"></script>
 	</head>
@@ -12,29 +13,15 @@
 		<div class="panel" data-bind="ui: {expand:true,vertical:true}">
 			<div id="content" data-bind="html: process, style: css, ui: {expand:true,horizontal:true,vertical:true}"></div>
 			<div id="js" data-bind="ui: {expand:true,horizontal:true,vertical:true}">
-				<textarea data-bind="value: js, ui: {expand:true,horizontal:true,vertical:true}"></textarea>
+				<textarea data-bind="value: js, editor: 'js', config: {lineNumbers:true}"></textarea>
 			</div>
 		</div>
 		<div class="panel" id="control" data-bind="ui: {expand:true,vertical:true}">
-			<textarea id="html" data-bind="value: html, ui: {expand:true,horizontal:true,vertical:'all'}"></textarea>
+			<div id="html" data-bind="ui: {expand:true,horizontal:true,vertical:'all'}">
+				<textarea data-bind="value: html, editor: 'html'"></textarea>
+			</div>
 			<div id="css" data-bind="ui: {expand:true,horizontal:true,vertical:'all'}">
-				<div id="map" data-bind="foreach: css, ui: {expand:true,vertical:true}">
-					<div class="selector" data-bind="click: add">
-						<input class="header" data-bind="value: name, click: select"/> {
-						<div class="properties" data-bind="foreach: properties">
-							<div class="property">
-								<input class="name" data-bind="value: name, hasFocus: true, event: { click: select, blur: unselect }" />:
-								<input class="value" data-bind="value: value, event: { click: select, blur: unselect }" />;
-								<button class="remove" data-bind="click: $parent.remove">-</button>
-							</div>
-						</div>
-						<div class="footer">}</div>
-					</div>
-				</div>
-				<div id="toolbox">
-					<button data-bind="click: add">+</button>
-					<button data-bind="remove" disabled="disabled">-</button>
-				</div>
+				<textarea data-bind="value: css, editor: 'css'"></textarea>
 			</div>
 		</div>
 	</div>

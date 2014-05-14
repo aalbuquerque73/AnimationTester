@@ -32,69 +32,19 @@
 #html {
 	position: relative;
 	display: inline-block;
-	vertical-align: middle;
+	vertical-align: top;
+	border: #000069 solid 1px;
+	border-radius: 5px;
+	padding: 5px;
 }
 
 #css {
 	position: relative;
 	display: inline-block;
-	background: linear-gradient(#ddd, #bbb);
-	border: #006900 solid 1px;
-	vertical-align: middle;
-	padding: 5px;
-}
-#map {
-	position: relative;
-	overflow: auto;
-}
-#toolbox {
-	position: absolute;
-	bottom: 0;
-}
-#toolbox button {
-	width: 3em;
-	margin: .3em .5em;
-	background-color: #006600;
-	background: linear-gradient(#060, #030);
+	vertical-align: top;
+	border: #000069 solid 1px;
 	border-radius: 5px;
-	color: #cecefe;
-	border: #00aa00 outset 2px;
-	box-shadow: 0px 3px 5px #000;
-	text-shadow: 0 -1px 0 #000;
-	-webkit-transition: all 150ms ease;
-	transition: all 150ms ease;
-}
-#toolbox button[disabled],
-#toolbox button[disabled]:hover,
-#toolbox button[disabled]:focus {
-	border-color: #aaaaaa;
-	background: linear-gradient(#666, #333);
-	-webkit-animation: none;
-	animation: none;
-}
-#toolbox button:hover,
-#toolbox button:focus {
-	background: linear-gradient(#070, #040);
-	-webkit-animation: pulsate 1.2s linear infinite;
-	animation: pulsate 1.2s linear infinite;
-}
-#toolbox button:active {
-	border: #00aa00 inset 2px;
-	box-shadow: 0px 0px 0px #000;
-	text-shadow: 0 0px 0 #000;
-	-webkit-transform: translateY(3px);	
-	transform: translateY(3px);
-	-webkit-animation: none;
-	animation: none;
-}
-#toolbox button[disabled]:active {
-	border: #aaaaaa outset 2px;
-	box-shadow: 0px 3px 5px #000;
-	text-shadow: 0 -1px 0 #000;
-	-webkit-transform: none;	
-	transform: none;
-	-webkit-transition: all 150ms ease;
-	transition: all 150ms ease;
+	padding: 5px;
 }
 @-webkit-keyframes pulsate {
     0%   { color: #ddd; text-shadow: 0 -1px 0 #000; }
@@ -105,14 +55,4 @@
     0%   { color: #ddd; text-shadow: 0 -1px 0 #000; }
     50%  { color: #fff; text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff; }
     100% { color: #ddd; text-shadow: 0 -1px 0 #000; }
-}
-
-.selector {
-	width: 100%;
-	background: none;
-	border: none;
-	text-align: left;
-}
-.selector .property {
-	text-indent: 2em;
 }
