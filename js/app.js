@@ -41,10 +41,9 @@ function($, _, ko, U) {
 		}, this);
 	}
 	ViewModel.prototype = {
-		add: function() {
-			this.css.push(new Selector());
+		importData: function() {
 		},
-		remove: function() {},
+		exportData: function() {},
 		
 		serialize: function() {
 			var save = {};
