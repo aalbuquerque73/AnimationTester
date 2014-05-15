@@ -1,4 +1,10 @@
 {
 	"name": "AnimationTester",
-	"main": "index.html"
+	"main": "index.html",
+	"version": "0.1.0",
+	"window": {
+		"title": "Animation Tester",
+		"toolbar": true,
+		"frame": true
+	}
 }

@@ -32,6 +32,7 @@ function($, _, ko, U, CodeMirror, Css) {
 				U.bus.trigger('expander');
 			},
 			expander: function() {
+				U.bus.trigger('expander-start');
 				_.each(this.list, function(options) {
 					var ctrl = options.ctrl;
 					if(ctrl != undefined && ctrl.expand) {
@@ -57,6 +58,7 @@ function($, _, ko, U, CodeMirror, Css) {
 						}
 					}
 				}, this);
+				U.bus.trigger('expander-end');
 			}
 		}
 	};
@@ -229,9 +231,16 @@ function($, _, ko, U, CodeMirror, Css) {
 		}
 		editor.refresh();
 		var wrapper = $(editor.getWrapperElement());
+		function resizer() {
+			console.log("[Editor:resizer]", this);
+			editor.refresh();
+		}
+		U.bus.on('expander-end', resizer, this);
 		ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
             wrapper.remove();
+            U.bus.off('expander-end', resizer, this);
         });
+		
 	}
 	var editors = {
 		css: function(element, options, bindings) {

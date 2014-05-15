@@ -13,17 +13,21 @@
 		<div class="panel" data-bind="ui: {expand:true,vertical:true}">
 			<div id="content" data-bind="html: process, style: css, ui: {expand:true,horizontal:true,vertical:true}"></div>
 			<div id="js" data-bind="ui: {expand:true,horizontal:true,vertical:true}">
+				<div class="title">Javascript</div>
 				<textarea data-bind="value: js, editor: 'js', codemirror: {lineNumbers:true}"></textarea>
 			</div>
 		</div>
 		<div class="panel" id="control" data-bind="ui: {expand:true,vertical:true}">
 			<div id="html" data-bind="ui: {expand:true,horizontal:true,vertical:'all'}">
+				<div class="title">HTML</div>
 				<textarea data-bind="value: html, editor: 'html'"></textarea>
 			</div>
 			<div id="css" data-bind="ui: {expand:true,horizontal:true,vertical:'all'}">
+				<div class="title">CSS</div>
 				<textarea data-bind="value: css, editor: 'css'"></textarea>
 			</div>
 		</div>
 	</div>
+	<div class="loading"><span>Loading...</span></div>
 	</body>
 </html>

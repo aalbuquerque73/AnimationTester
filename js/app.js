@@ -56,6 +56,7 @@ function($, _, ko, U) {
 		},
 		parseHandler: function() {
 			console.log("[ViewModel:parsehandler]", arguments);
+			$('.loading').hide();
 		},
 		start: function() {
 			ko.applyBindings(this);
