@@ -13,7 +13,7 @@
 		<div class="panel" data-bind="ui: {expand:true,vertical:true}">
 			<div id="content" data-bind="html: process, style: css, ui: {expand:true,horizontal:true,vertical:true}"></div>
 			<div id="js" data-bind="ui: {expand:true,horizontal:true,vertical:true}">
-				<textarea data-bind="value: js, editor: 'js', config: {lineNumbers:true}"></textarea>
+				<textarea data-bind="value: js, editor: 'js', codemirror: {lineNumbers:true}"></textarea>
 			</div>
 		</div>
 		<div class="panel" id="control" data-bind="ui: {expand:true,vertical:true}">

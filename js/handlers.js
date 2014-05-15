@@ -213,46 +213,50 @@ function($, _, ko, U, CodeMirror, Css) {
 		}
 	};
 	
-	function Editor() {
-		this.editors = {
-			css: function(element, options) {
-				options = options || {};
-				options.mode = "css";
-				CodeMirror.fromTextArea(element, options);
-			},
-			html: function(element, options) {
-				options = options || {};
-				options.mode = "htmlmixed";
-				CodeMirror.fromTextArea(element, options);
-			},
-			js: function(element, options) {
-				options = options || {};
-				options.mode = "javascript";
-				CodeMirror.fromTextArea(element, options);
-			}
+	function Editor(element, mode, options, bindings) {
+		options = options || {};
+		options.mode = mode;
+		options.onChange = function(cm) {
+			allBindingsAccessor().value(cm.getValue());
 		};
+		var editor = CodeMirror.fromTextArea(element, options);
+		editor.on('change', function(cm) {
+            bindings.value(cm.getValue());
+        });
+		element.editor = editor;
+		if (bindings.value()) {
+			editor.setValue(bindings.value());
+		}
+		editor.refresh();
+		var wrapper = $(editor.getWrapperElement());
+		ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+            wrapper.remove();
+        });
 	}
-	Editor.prototype = {
-		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			console.log("[ko:editor:init]", arguments, this);
-			var mode = ko.utils.unwrapObservable(valueAccessor());
-			if (this.editors.hasOwnProperty(mode)) {
-				this.editors[mode](element, allBindings.get('config'));
-			}
+	var editors = {
+		css: function(element, options, bindings) {
+			Editor(element, "css", options, bindings);
 		},
-		
-		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			console.log("[ko:editor:update]", arguments, this);
+		html: function(element, options, bindings) {
+			Editor(element, "htmlmixed", options, bindings);
+		},
+		js: function(element, options, bindings) {
+			Editor(element, "javascript", options, bindings);
 		}
 	};
-	var editor = new Editor();
 	ko.bindingHandlers.editor = {
 		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			editor.init(element, valueAccessor, allBindings, viewModel, bindingContext);
+			console.log("[ko:editor:init]", arguments);
+			var mode = ko.utils.unwrapObservable(valueAccessor());
+			if (editors.hasOwnProperty(mode)) {
+				editors[mode](element, allBindings.get('codemirror'), allBindings());
+			}
 		},
 		
 		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			editor.update(element, valueAccessor, allBindings, viewModel, bindingContext);
+			console.log("[ko:editor:update]", arguments);
+			if(element.editor)
+                element.editor.refresh();
 		}
 	};
 	
