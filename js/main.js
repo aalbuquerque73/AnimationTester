@@ -35,6 +35,15 @@ requirejs.config({
     	'mode/css/css': {
     		deps: ['lib/codemirror']
     	},
+    	'addon/edit/closebrackets': {
+    		deps: ['lib/codemirror']
+    	},
+    	'addon/edit/matchbrackets': {
+    		deps: ['lib/codemirror']
+    	},
+    	'addon/edit/closetag': {
+    		deps: ['lib/codemirror']
+    	},
     	handlers: {
     		deps: ['jquery', 'underscore', 'knockout', 'utils', 'lib/codemirror', 'mode/css/css']
     	},

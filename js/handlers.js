@@ -7,7 +7,10 @@ define(
  'lib/codemirror',
  'mode/css/css',
  'mode/htmlmixed/htmlmixed',
- 'mode/javascript/javascript'
+ 'mode/javascript/javascript',
+ 'addon/edit/closebrackets',
+ 'addon/edit/matchbrackets',
+ 'addon/edit/closetag'
 ],
 function($, _, ko, U, CodeMirror, Css) {
 	var ui = {
