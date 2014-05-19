@@ -39,6 +39,7 @@
 	border: #000069 solid 1px;
 	border-radius: 5px;
 	margin-bottom: 1%;
+	overflow: hidden;
 }
 
 #js {
@@ -48,6 +49,7 @@
 	border: #000069 solid 1px;
 	border-radius: 5px;
 	padding: 5px;
+	overflow: auto;
 }
 
 #control {
@@ -62,6 +64,7 @@
 	border: #000069 solid 1px;
 	border-radius: 5px;
 	padding: 5px;
+	overflow: auto;
 }
 
 #css {
@@ -71,6 +74,7 @@
 	border: #000069 solid 1px;
 	border-radius: 5px;
 	padding: 5px;
+	overflow: auto;
 }
 
 .panel.control {

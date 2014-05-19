@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "knockout", "utils", 'handlers'],
+define(["jquery", "underscore", "knockout", "utils"],
 function($, _, ko, U) {
 	function ViewModel() {
 		this._data = {
@@ -8,7 +8,7 @@ function($, _, ko, U) {
 		};
 		try {
 			var local = JSON.parse(localStorage.AnimationTester);
-			console.log("[ViewModel:constructor", local);
+			//console.log("[ViewModel:constructor", local);
 			_.each(local, function(value, key) {
 				this[key] = ""+value;
 			}, this._data);
@@ -23,7 +23,7 @@ function($, _, ko, U) {
 		}
 		
 		_.each(this._data, function(value, key) {
-			console.log("[ViewModel:constructor:data]", arguments);
+			//console.log("[ViewModel:constructor:data]", arguments);
 			this[key] = ko.observable(value);
 		}, this);
 		
@@ -50,16 +50,16 @@ function($, _, ko, U) {
 			_.each(this._data, function(value, key) {
 				save[key] = this[key]();
 			}, this);
-			console.log("[ViewModel:serialize]", save);
+			//console.log("[ViewModel:serialize]", save);
 			localStorage.AnimationTester = JSON.stringify(save);
 		},
 		parseHandler: function() {
-			console.log("[ViewModel:parsehandler]", arguments);
+			//console.log("[ViewModel:parsehandler]", arguments);
 			$('.loading').hide();
 		},
 		start: function() {
 			ko.applyBindings(this);
-			console.log("window.load", sessionStorage, localStorage);
+			//console.log("window.load", sessionStorage, localStorage);
 		}
 	};
 	
