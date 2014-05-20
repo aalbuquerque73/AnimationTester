@@ -13,6 +13,7 @@ requirejs.config({
     	http: 'lib/http',
     	iscroll: 'lib/iscroll',
     	utils: 'lib/utils',
+    	lz: 'lib/lz-string-1.3.3-min',
     	
     	handlers: 'handlers',
     	
@@ -28,6 +29,12 @@ requirejs.config({
     		deps: ['jquery'],
     		exports: "jQuery.fn.velocity"
     	},
+    	iscroll: {
+            exports: 'iScroll'
+        },
+        lz: {
+        	exports: 'LZString'
+        },
     	underscore: {
     		exports: '_'
     	},
@@ -66,7 +73,7 @@ requirejs.config({
     		      ]
     	},
     	app: {
-    		deps: ["knockout", "handlers"],
+    		deps: ["knockout", "handlers", 'iscroll'],
     		exports: "app"
     	}
     }

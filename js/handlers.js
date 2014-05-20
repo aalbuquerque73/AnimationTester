@@ -178,36 +178,21 @@ function($, _, ko, U, CodeMirror) {
 	ko.bindingHandlers.style = {
 		init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 			console.log("[ko:style:init]", arguments);
-			var css = ko.utils.unwrapObservable(valueAccessor())
-				.replace(/([\.#\w\s,-]+)\s*{([^}]*)}/g, function(match, selector, properties) {
-					console.log("[style:match]", arguments);
-					var $selector = $("#content "+selector);
-					var props = properties
-						.replace(/([\w-]+)\s*:\s*([^;]*);/gm,
-							function(match, property, value) {
-								console.log("[style:match:property]", arguments);
-								$selector.css(property, value);
-								return "#####";
-							});
-					console.log("[style:match:props]", selector, props);
-					return selector + " {}";
-				});
-			console.log("[ko:style:init]", arguments, css);
 		},
 		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 			console.log("[ko:style:update]", arguments);
 			var css = ko.utils.unwrapObservable(valueAccessor())
-			.replace(/([\.#\w\s,-]+)\s*{([^}]*)}/g, function(match, selector, properties) {
-				console.log("[style:match]", arguments);
+			.replace(/([\.#\w\s,-]+[^\s])\s*{([^}]*)}/g, function(match, selector, properties) {
+				//console.log("[style:match]", arguments);
 				var $selector = $("#content "+selector);
 				var props = properties
 					.replace(/([\w-]+)\s*:\s*([^;]*);/gm,
 						function(match, property, value) {
-							console.log("[style:match:property]", arguments);
+							//console.log("[style:match:property]", arguments);
 							$selector.css(property, value);
 							return "#####";
 						});
-				console.log("[style:match:props]", props);
+				//console.log("[style:match:props]", props);
 				return match;
 			});
 			//console.log("[ko:style:update]", arguments, css);
@@ -226,13 +211,17 @@ function($, _, ko, U, CodeMirror) {
         });
 		element.editor = editor;
 		if (bindings.value()) {
-			editor.setValue(bindings.value());
+			_.debounce(function() {
+				editor.setValue(bindings.value());
+			});
 		}
 		editor.refresh();
 		var wrapper = $(editor.getWrapperElement());
 		function resizer() {
 			console.log("[Editor:resizer]", this);
-			editor.refresh();
+			_.debounce(function() {
+				editor.refresh();
+			});
 		}
 		U.bus.on('expander-end', resizer, this);
 		ko.utils.domNodeDisposal.addDisposeCallback(element, function() {

@@ -1,5 +1,5 @@
-define(["jquery", "underscore", "knockout", "utils"],
-function($, _, ko, U) {
+define(["jquery", "underscore", "knockout", "utils", 'lz'],
+function($, _, ko, U, LZString) {
 	function ViewModel() {
 		this._data = {
 			html: "",
@@ -28,6 +28,12 @@ function($, _, ko, U) {
 		}, this);
 		
 		this.process = ko.computed(function() {
+			console.log("[ViewModel:constructor:process]");
+			var self = this;
+			setTimeout(function() {
+				self.css.valueHasMutated();
+				self.js.valueHasMutated();
+			}, 0);
 			return this.html();
 		}, this);
 		
@@ -35,7 +41,11 @@ function($, _, ko, U) {
 			var js = ko.utils.unwrapObservable(this.js());
 			setTimeout(function() {
 				(function() {
-					eval(js);
+					try {
+						eval(js);
+					} catch(e) {
+						
+					}
 				}).apply(this);
 			}, 0);
 		}, this);
