@@ -1,10 +1,18 @@
 {
-	"name": "AnimationTester",
-	"main": "index.html",
-	"version": "0.1.0",
-	"window": {
-		"title": "Animation Tester",
-		"toolbar": true,
-		"frame": true
-	}
+    "name": "AnimationTester",
+    "main": "index.html",
+    "version": "0.1.0",
+    "single-instance": false,
+    "window": {
+        "title": "Animation Tester",
+        "toolbar": false,
+        "frame": true
+    },
+    "devDependencies": {
+        "gulp": "^3.8.8",
+        "gulp-less": "^1.3.6",
+        "gulp-util": "^3.0.1",
+        "node-webkit-builder": "^0.1.3",
+        "underscore": "^1.7.0"
+    }
 }
